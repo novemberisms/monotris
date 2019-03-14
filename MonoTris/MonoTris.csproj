@@ -64,6 +64,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Stage.cs" />
     <Compile Include="Src\Images.cs" />
+    <Compile Include="Src\StageDrawer.cs" />
+    <Compile Include="Src\BlockColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

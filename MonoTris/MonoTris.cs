@@ -12,19 +12,18 @@ namespace MonoTris
     /// </summary>
     public class MonoTris : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
-        /// <summary> does this work by itself? </summary>
-        Stage stage;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        Stage _stage;
+        StageDrawer _stageDrawer;
 
         public MonoTris()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             // set the window dimensions
-            graphics.PreferredBackBufferWidth = 600;
-            graphics.PreferredBackBufferHeight = 800;
-            graphics.ApplyChanges();
+            _graphics.PreferredBackBufferWidth = 600;
+            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.ApplyChanges();
             // let the mouse be visible
             IsMouseVisible = true;
             // set the root directory for content
@@ -39,6 +38,11 @@ namespace MonoTris
         /// </summary>
         protected override void Initialize()
         {
+            var stageConfig = new StageConfiguration { Width = 10, Height = 16 };
+            _stage = new Stage(stageConfig);
+            _stageDrawer = new StageDrawer { Position = Vector2.Zero, Scale = 2.5F };
+
+            Debug.WriteLine("Stage dimensions: {0}, {1}", _stage.Width, _stage.Height);
             base.Initialize();
         }
 
@@ -48,8 +52,8 @@ namespace MonoTris
         /// </summary>
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            Images.LoadContent();
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Images.LoadContent(Content);
         }
 
         /// <summary>
@@ -71,7 +75,20 @@ namespace MonoTris
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Teal);
+
+            // this needs to be called this way so that we use the 'Nearest' filter instead of the 'Linear' one.
+            _spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise
+            );
+
+            _stageDrawer.DrawStage(_spriteBatch, _stage);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

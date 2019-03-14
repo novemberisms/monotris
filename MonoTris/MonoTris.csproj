@@ -66,6 +66,7 @@
     <Compile Include="Src\Images.cs" />
     <Compile Include="Src\StageDrawer.cs" />
     <Compile Include="Src\BlockColor.cs" />
+    <Compile Include="Src\Tetromino.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -93,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Content\TetrominoShapes.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

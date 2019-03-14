@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -54,6 +55,16 @@ namespace MonoTris
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Images.LoadContent(Content);
+
+            using (var writer = new StreamWriter("hello.txt"))
+            {
+                Debug.WriteLine("writing to hello.txt");
+                Debug.WriteLine("pwd: {0}" ,System.IO.Directory.GetCurrentDirectory());
+                writer.WriteLine("What'cha gonna do boi?");
+            }
+
+            var content = File.ReadAllText("Content/TetrominoShapes.json");
+            Debug.WriteLine(content);
         }
 
         /// <summary>

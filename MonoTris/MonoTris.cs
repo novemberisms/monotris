@@ -55,23 +55,13 @@ namespace MonoTris
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Images.LoadContent(Content);
-
-            using (var writer = new StreamWriter("hello.txt"))
-            {
-                Debug.WriteLine("writing to hello.txt");
-                Debug.WriteLine("pwd: {0}" ,System.IO.Directory.GetCurrentDirectory());
-                writer.WriteLine("What'cha gonna do boi?");
-            }
-
-            var content = File.ReadAllText("Content/TetrominoShapes.json");
-            Debug.WriteLine(content);
+            TetrominoShapeDatabase.LoadData();
         }
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -83,7 +73,6 @@ namespace MonoTris
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Teal);

@@ -9,6 +9,7 @@ namespace MonoTris
     {
         public Vector2 Position = new Vector2();
         public float Scale = 1.0F;
+        public Color ColorMask = Color.White;
 
         public void DrawStage(SpriteBatch spriteBatch, Stage stage)
         {
@@ -20,7 +21,7 @@ namespace MonoTris
                     Images.Blocks, 
                     drawPosition, 
                     _quads[cell.Value], 
-                    Color.White, 
+                    ColorMask, 
                     0, 
                     Vector2.Zero, 
                     Scale, 

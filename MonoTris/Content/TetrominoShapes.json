@@ -1,8 +1,65 @@
-﻿{
-  "data" :  [
-    "yo",
-    "mama",
-    "so",
-    "fat"
-  ]
-}
+﻿[
+  {
+    "width": 2, "height": 2,
+    "color": "yellow",
+    "data": [
+      1, 1,
+      1, 1
+    ]
+  },
+  {
+    "width": 1, "height": 4,
+    "color": "green",
+    "data": [
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "width": 2, "height": 3,
+    "color": "red",
+    "data": [
+      0, 1,
+      1, 1,
+      1, 0
+    ]
+  },
+  {
+    "width": 2, "height": 3,
+    "color": "orange",
+    "data": [
+      1, 0,
+      1, 1,
+      0, 1
+    ]
+  },
+  {
+    "width": 2, "height": 3,
+    "color": "indigo",
+    "data": [
+      1, 1,
+      1, 0,
+      1, 0
+    ]
+  },
+  {
+    "width": 2, "height": 3,
+    "color": "blue",
+    "data": [
+      1, 1,
+      0, 1,
+      0, 1
+    ]
+  },
+  {
+    "width": 2, "height": 3,
+    "color": "violet",
+    "data": [
+      0, 1,
+      1, 1,
+      0, 1
+    ]
+  }
+]

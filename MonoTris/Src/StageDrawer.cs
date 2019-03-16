@@ -7,16 +7,23 @@ namespace MonoTris
 {
     public class StageDrawer
     {
-        public Vector2 Position = new Vector2();
-        public float Scale = 1.0F;
+        public const int TileSize = 16;
+        public Vector2 Position;
+        public float Scale;
         public Color ColorMask = Color.White;
+
+        public StageDrawer(StageDrawerConfiguration config)
+        {
+            Position = config.Position;
+            Scale = config.Scale;
+        }
 
         public void DrawStage(SpriteBatch spriteBatch, Stage stage)
         {
             stage.IterCells(delegate (StageCell cell)
             {
                 if (cell.Value == BlockColor.None) return;
-                var drawPosition = Position + cell.Coordinates * (16 * Scale);
+                var drawPosition = Position + cell.Coordinates * (TileSize * Scale);
                 spriteBatch.Draw(
                     Images.Blocks, 
                     drawPosition, 
@@ -31,16 +38,27 @@ namespace MonoTris
             });
         }
 
+        public Vector2 GetDrawDimensions(Stage stage)
+        {
+            return new Vector2(stage.Width, stage.Height) * TileSize * Scale;
+        }
+
         private static readonly Dictionary<BlockColor, Rectangle> _quads = new Dictionary<BlockColor, Rectangle>
         {
-            { BlockColor.Red, new Rectangle(16 * 0, 0, 16, 16) },
-            { BlockColor.Orange, new Rectangle(16 * 1, 0, 16, 16) },
-            { BlockColor.Yellow, new Rectangle(16 * 2, 0, 16, 16) },
-            { BlockColor.Green, new Rectangle(16 * 3, 0, 16, 16) },
-            { BlockColor.Blue, new Rectangle(16 * 4, 0, 16, 16) },
-            { BlockColor.Indigo, new Rectangle(16 * 5, 0, 16, 16) },
-            { BlockColor.Violet, new Rectangle(16 * 6, 0, 16, 16) },
-            { BlockColor.Gray, new Rectangle(16 * 7, 0, 16, 16) },
+            { BlockColor.Red, new Rectangle(TileSize * 0, 0, TileSize, TileSize) },
+            { BlockColor.Orange, new Rectangle(TileSize * 1, 0, TileSize, TileSize) },
+            { BlockColor.Yellow, new Rectangle(TileSize * 2, 0, TileSize, TileSize) },
+            { BlockColor.Green, new Rectangle(TileSize * 3, 0, TileSize, TileSize) },
+            { BlockColor.Blue, new Rectangle(TileSize * 4, 0, TileSize, TileSize) },
+            { BlockColor.Indigo, new Rectangle(TileSize * 5, 0, TileSize, TileSize) },
+            { BlockColor.Violet, new Rectangle(TileSize * 6, 0, TileSize, TileSize) },
+            { BlockColor.Gray, new Rectangle(TileSize * 7, 0, TileSize, TileSize) },
         };
+    }
+
+    public struct StageDrawerConfiguration
+    {
+        public Vector2 Position;
+        public float Scale;
     }
 }

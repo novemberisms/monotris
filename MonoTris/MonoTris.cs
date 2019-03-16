@@ -13,10 +13,11 @@ namespace MonoTris
     /// </summary>
     public class MonoTris : Game
     {
-        GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
-        Stage _stage;
-        StageDrawer _stageDrawer;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private GameState _currentState;
+        private Color _backgroundColor = new Color(63, 71, 84);
+
 
         public MonoTris()
         {
@@ -39,11 +40,7 @@ namespace MonoTris
         /// </summary>
         protected override void Initialize()
         {
-            var stageConfig = new StageConfiguration { Width = 10, Height = 16 };
-            _stage = new Stage(stageConfig);
-            _stageDrawer = new StageDrawer { Position = Vector2.Zero, Scale = 2.5F };
-
-            Debug.WriteLine("Stage dimensions: {0}, {1}", _stage.Width, _stage.Height);
+            SwitchState<MainGameplay>();
             base.Initialize();
         }
 
@@ -67,6 +64,8 @@ namespace MonoTris
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            _currentState.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -75,7 +74,7 @@ namespace MonoTris
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Teal);
+            GraphicsDevice.Clear(_backgroundColor);
 
             // this needs to be called this way so that we use the 'Nearest' filter instead of the 'Linear' one.
             _spriteBatch.Begin(
@@ -86,11 +85,19 @@ namespace MonoTris
                 RasterizerState.CullCounterClockwise
             );
 
-            _stageDrawer.DrawStage(_spriteBatch, _stage);
+            _currentState.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        protected void SwitchState<T>() where T : GameState, new()
+        {
+            if (_currentState != null) _currentState.Cleanup();
+            _currentState = new T();
+            _currentState.SetGameInstance(this);
+            _currentState.Initialize();
         }
     }
 }

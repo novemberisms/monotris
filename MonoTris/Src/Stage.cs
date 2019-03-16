@@ -31,23 +31,27 @@ namespace MonoTris
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    _cells[y, x] = new StageCell(x, y, BlockColor.Blue);
+                    _cells[y, x] = new StageCell(x, y);
                 }
             }
         }
 
         /// <summary>
-        /// Performs `fn` for each cell in the stage, passing in the `x`, `y`, and `values` of the cell.
+        /// Performs `fn` for each cell in the stage, passing in a `StageCell`
         /// </summary>
         public void IterCells(Action<StageCell> fn)
         {
-            for (var y = 0; y < Height; y++)
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    fn(_cells[y, x]);
-                }
-            }
+            foreach (var cell in _cells) fn(cell);
+        }
+
+        public StageCell GetCell(int x, int y)
+        {
+            return _cells[y, x];
+        }
+
+        public void Clear()
+        {
+            IterCells((cell) => cell.Value = BlockColor.None);
         }
     }
 
@@ -59,12 +63,11 @@ namespace MonoTris
 
     public class StageCell
     {
-        public BlockColor Value;
+        public BlockColor Value = BlockColor.None;
         readonly public Vector2 Coordinates;
-        internal StageCell(int x, int y, BlockColor value)
+        internal StageCell(int x, int y)
         {
             Coordinates = new Vector2(x, y);
-            Value = value;
         }
     }
 }

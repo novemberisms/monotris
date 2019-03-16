@@ -70,6 +70,9 @@
     <Compile Include="Src\StageDrawer.cs" />
     <Compile Include="Src\BlockColor.cs" />
     <Compile Include="Src\Tetromino.cs" />
+    <Compile Include="Src\GameStates\GameState.cs" />
+    <Compile Include="Src\GameStates\MainGameplay.cs" />
+    <Compile Include="Src\InputManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -98,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Src\" />
+    <Folder Include="Src\GameStates\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Content\TetrominoShapes.json" />

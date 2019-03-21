@@ -25,14 +25,14 @@ namespace MonoTris
                 if (cell.Value == BlockColor.None) return;
                 var drawPosition = Position + cell.Coordinates * (TileSize * Scale);
                 spriteBatch.Draw(
-                    Images.Blocks, 
-                    drawPosition, 
-                    _quads[cell.Value], 
-                    ColorMask, 
-                    0, 
-                    Vector2.Zero, 
-                    Scale, 
-                    SpriteEffects.None, 
+                    Images.Blocks,
+                    drawPosition,
+                    _quads[cell.Value],
+                    ColorMask,
+                    0,
+                    Vector2.Zero,
+                    Scale,
+                    SpriteEffects.None,
                     0
                 );
             });

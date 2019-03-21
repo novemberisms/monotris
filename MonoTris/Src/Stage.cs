@@ -20,7 +20,7 @@ namespace MonoTris
 
         public Stage(StageConfiguration config)
         {
-            _dimensions = new Vector2((float)config.Width, (float)config.Height);
+            _dimensions = new Vector2(config.Width, config.Height);
             InitializeBoard();
         }
 
@@ -49,9 +49,9 @@ namespace MonoTris
             return _cells[y, x];
         }
 
-        public void Clear()
+        public void SetCellColor(int x, int y, BlockColor color)
         {
-            IterCells((cell) => cell.Value = BlockColor.None);
+            _cells[y, x].Value = color;
         }
     }
 
@@ -65,7 +65,8 @@ namespace MonoTris
     {
         public BlockColor Value = BlockColor.None;
         readonly public Vector2 Coordinates;
-        internal StageCell(int x, int y)
+
+        public StageCell(int x, int y)
         {
             Coordinates = new Vector2(x, y);
         }

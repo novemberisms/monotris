@@ -15,9 +15,7 @@ namespace MonoTris
     public class TetrominoShapeDatabase
     {
 
-        public static List<TetrominoShape> Shapes { get { return _shapes; } }
-
-        private static List<TetrominoShape> _shapes;
+        public static List<TetrominoShape> Shapes { get; private set; }
 
         private static Dictionary<string, BlockColor> _colorLookup = new Dictionary<string, BlockColor>
         {
@@ -33,14 +31,14 @@ namespace MonoTris
 
         public static void LoadData()
         {
-            _shapes = new List<TetrominoShape>();
+            Shapes = new List<TetrominoShape>();
 
             var shapeData = JsonConvert.DeserializeObject<List<TetrominoShapeSchema>>(
                     File.ReadAllText("Content/TetrominoShapes.json"));
 
             foreach (var shape in shapeData)
             {
-                _shapes.Add(new TetrominoShape(
+                Shapes.Add(new TetrominoShape(
                     shape.width,
                     shape.height,
                     _colorLookup[shape.color],
@@ -71,13 +69,13 @@ namespace MonoTris
             for (var i = 0; i < data.Count; i++)
             {
                 var x = i % width;
-                var y = (int)(i / width);
+                var y = i / width;
                 Shape[y, x] = data[i] == 1;
             }
         }
     }
 
-    internal struct TetrominoShapeSchema
+    public class TetrominoShapeSchema
     {
         public int width;
         public int height;

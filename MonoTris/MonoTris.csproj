@@ -73,6 +73,7 @@
     <Compile Include="Src\GameStates\GameState.cs" />
     <Compile Include="Src\GameStates\MainGameplay.cs" />
     <Compile Include="Src\InputManager.cs" />
+    <Compile Include="Src\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

@@ -26,3 +26,17 @@
 /processorParam:TextureFormat=Color
 /build:blocks.png;blocks
 
+#begin Regular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Regular.spritefont
+
+#begin TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:TitleFont.spritefont
+

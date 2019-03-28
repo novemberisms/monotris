@@ -40,7 +40,6 @@ namespace MonoTris
         /// </summary>
         protected override void Initialize()
         {
-            SwitchState<MainGameplay>();
             base.Initialize();
         }
 
@@ -51,8 +50,14 @@ namespace MonoTris
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // load all the static content
             Images.LoadContent(Content);
+            Fonts.LoadContent(Content);
             TetrominoShapeDatabase.LoadData();
+
+            // this has to be called after all content has been loaded
+            SwitchState<TitleScreen>();
         }
 
         /// <summary>
@@ -92,7 +97,7 @@ namespace MonoTris
             base.Draw(gameTime);
         }
 
-        protected void SwitchState<T>() where T : GameState, new()
+        public void SwitchState<T>() where T : GameState, new()
         {
             if (_currentState != null) _currentState.Cleanup();
             _currentState = new T();

@@ -60,6 +60,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Betwixt">
+      <HintPath>..\packages\Betwixt.1.4.1\lib\net35\Betwixt.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MonoTris.cs" />
@@ -74,6 +77,9 @@
     <Compile Include="Src\GameStates\MainGameplay.cs" />
     <Compile Include="Src\InputManager.cs" />
     <Compile Include="Src\Timer.cs" />
+    <Compile Include="Src\GameStates\TitleScreen.cs" />
+    <Compile Include="Src\Fonts.cs" />
+    <Compile Include="Src\TetrominoShape.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

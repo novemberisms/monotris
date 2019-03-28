@@ -27,7 +27,19 @@ namespace MonoTris
         // assigning empty delegates to events will allow you to call them even if nobody else
         // is subsribed
 
-        public event Action OnInitialize = delegate() {};
-        public event Action OnCleanup = delegate() {};
+        public event Action OnInitialize = delegate () { };
+        public event Action OnCleanup = delegate () { };
+
+        protected Vector2 ScreenSize
+        {
+            get
+            {
+                return new Vector2
+                (
+                    GameInstance.GraphicsDevice.Viewport.Width,
+                    GameInstance.GraphicsDevice.Viewport.Height
+                );
+            }
+        }
     }
 }

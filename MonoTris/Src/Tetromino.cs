@@ -16,13 +16,13 @@ namespace MonoTris
         }
 
         /// <summary> returns `true` if the move was successful and `false` otherwise </summary>
-        public bool Move(Stage stage, Vector2 direction)
+        public MoveCollisionResponse Move(Stage stage, Vector2 direction)
         {
             return TryUpdate(stage, direction, Rotation);
         }
 
         /// <summary> returns `true` if the rotation was successful and `false` otherwise </summary>
-        public bool Rotate(Stage stage, RotationDirection direction)
+        public MoveCollisionResponse Rotate(Stage stage, RotationDirection direction)
         {
             var finalRotation = Rotation;
             switch (Rotation)
@@ -52,32 +52,60 @@ namespace MonoTris
             return TryUpdate(stage, new Vector2(), finalRotation);
         }
 
-        private bool TryUpdate(Stage stage, Vector2 moveDirection, ShapeRotation newRotation)
+        public Vector2 FindEstimatedLandingPosition(Stage stage)
         {
-            var success = false;
-            ApplyStage(stage, BlockColor.None);
-
-            if (moveDirection.LengthSquared() > 0 && CanMove(stage, moveDirection))
+            ApplyStage(stage, BlockColor.None, Position);
+            var currentOffset = new Vector2();
+            while (true)
             {
-                Position += moveDirection;
-                success = true;
+                if (CanMove(stage, currentOffset) == MoveCollisionResponse.None)
+                {
+                    currentOffset += Vector2.UnitY;
+                }
+                else
+                {
+                    currentOffset -= Vector2.UnitY;
+                    break;
+                }
             }
-
-            ApplyStage(stage, Shape.Color);
-            return success;
+            ApplyStage(stage, Shape.Color, Position);
+            return Position + currentOffset;
         }
 
-        private void ApplyStage(Stage stage, BlockColor color)
+        private MoveCollisionResponse TryUpdate(Stage stage, Vector2 moveDirection, ShapeRotation newRotation)
+        {
+            ApplyStage(stage, BlockColor.None, Position);
+
+            var oldRotation = Rotation;
+            Rotation = newRotation;
+
+            var collisionResponse = CanMove(stage, moveDirection);
+
+            if (collisionResponse == MoveCollisionResponse.None)
+            {
+                Position += moveDirection;
+            }
+            else
+            {
+                Rotation = oldRotation;
+            }
+
+            ApplyStage(stage, Shape.Color, Position);
+
+            return collisionResponse;
+        }
+
+        public void ApplyStage(Stage stage, BlockColor color, Vector2 position)
         {
             var rotatedShape = Shape.GetShapeRotated(Rotation);
             var rotatedPivot = Shape.GetPivotRotated(Rotation);
 
             for (var y = 0; y < rotatedShape.GetLength(0); y++)
             {
-                var gridY = Position.Y - rotatedPivot.Y + y;
+                var gridY = position.Y - rotatedPivot.Y + y;
                 for (var x = 0; x < rotatedShape.GetLength(1); x++)
                 {
-                    var gridX = Position.X - rotatedPivot.X + x;
+                    var gridX = position.X - rotatedPivot.X + x;
                     if (rotatedShape[y, x])
                     {
                         stage.SetCellColor((int)gridX, (int)gridY, color);
@@ -86,13 +114,13 @@ namespace MonoTris
             }
         }
 
-        private bool CanMove(Stage stage, Vector2 direction)
+        private MoveCollisionResponse CanMove(Stage stage, Vector2 direction)
         {
-            var rotated = Shape.GetShapeRotated(Rotation);
+            var rotatedShape = Shape.GetShapeRotated(Rotation);
             var rotatedPivot = Shape.GetPivotRotated(Rotation);
 
-            var rotatedWidth = rotated.GetLength(1);
-            var rotatedHeight = rotated.GetLength(0);
+            var rotatedWidth = rotatedShape.GetLength(1);
+            var rotatedHeight = rotatedShape.GetLength(0);
 
             var projectedPosition = Position + direction;
 
@@ -102,12 +130,38 @@ namespace MonoTris
             var topBoundary = (int)(projectedPosition.Y - rotatedPivot.Y);
             var bottomBoundary = (int)(projectedPosition.Y - rotatedPivot.Y) + rotatedHeight - 1;
 
-            if (leftBoundary < 0) return false;
-            if (rightBoundary >= stage.Width) return false;
-            if (topBoundary < 0) return false;
-            if (bottomBoundary >= stage.Height) return false;
+            if (leftBoundary < 0) return MoveCollisionResponse.LeftWall;
+            if (rightBoundary >= stage.Width) return MoveCollisionResponse.RightWall;
+            if (topBoundary < 0) return MoveCollisionResponse.Ceiling; // when would this happen?
+            if (bottomBoundary >= stage.Height) return MoveCollisionResponse.Floor;
 
-            return true;
+            // check if the resulting position would make the blocks of the Tetromino overlap with any existing blocks in the stage
+            for (var y = topBoundary; y <= bottomBoundary; y++)
+            {
+                for (var x = leftBoundary; x <= rightBoundary; x++)
+                {
+                    var shapeHasBlock = rotatedShape[
+                        y - topBoundary,
+                        x - leftBoundary
+                    ];
+                    if (shapeHasBlock == true && stage.GetCell(x, y).Value != BlockColor.None)
+                    {
+                        return MoveCollisionResponse.ExistingBlock;
+                    }
+                }
+            }
+
+            return MoveCollisionResponse.None;
         }
+    }
+
+    public enum MoveCollisionResponse
+    {
+        None,
+        LeftWall,
+        RightWall,
+        Ceiling,
+        Floor,
+        ExistingBlock,
     }
 }

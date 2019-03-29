@@ -33,15 +33,70 @@ namespace MonoTris
 
         public bool[,] GetShapeRotated(ShapeRotation rotation)
         {
-            if (rotation == ShapeRotation.Zero) return (bool[,])Shape.Clone();
-            // TODO
-            return (bool[,])Shape.Clone();
+            var rotatedWidth = Height;
+            var rotatedHeight = Width;
+            bool[,] result;
+
+            switch (rotation)
+            {
+                case ShapeRotation.Zero:
+                    return (bool[,])Shape.Clone();
+                case ShapeRotation.OneEighty:
+                    result = new bool[Height, Width];
+                    for (var y = 0; y < Height; y++)
+                    {
+                        for (var x = 0; x < Width; x++)
+                        {
+                            var resultX = Width - x - 1;
+                            var resultY = Height - y - 1;
+                            result[resultY, resultX] = Shape[y, x];
+                        }
+                    }
+                    return result;
+                case ShapeRotation.TwoSeventy:
+                    result = new bool[rotatedHeight, rotatedWidth];
+                    for (var y = 0; y < Height; y++)
+                    {
+                        for (var x = 0; x < Width; x++)
+                        {
+                            var resultX = y;
+                            var resultY = Width - x - 1;
+                            result[resultY, resultX] = Shape[y, x];
+                        }
+                    }
+                    return result;
+                case ShapeRotation.Ninety:
+                    result = new bool[rotatedHeight, rotatedWidth];
+                    for (var y = 0; y < Height; y++)
+                    {
+                        for (var x = 0; x < Width; x++)
+                        {
+                            var resultX = Height - y - 1;
+                            var resultY = x;
+                            result[resultY, resultX] = Shape[y, x];
+                        }
+                    }
+                    return result;
+            }
+            // unreachable
+            return null;
         }
 
         public Vector2 GetPivotRotated(ShapeRotation rotation)
         {
-            // TODO
-            return new Vector2(PivotX, PivotY);
+            switch (rotation)
+            {
+                case ShapeRotation.Zero:
+                case ShapeRotation.OneEighty:
+                    return new Vector2(PivotX, PivotY);
+                case ShapeRotation.Ninety:
+                case ShapeRotation.TwoSeventy:
+                    var rotatedPivotX = (Height - 1) / 2;
+                    var rotatedPivotY = (Width - 1) / 2;
+                    return new Vector2(rotatedPivotX, rotatedPivotY);
+            }
+            // unreachable
+            return new Vector2();
         }
     }
 

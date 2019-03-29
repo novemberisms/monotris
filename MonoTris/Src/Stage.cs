@@ -53,6 +53,57 @@ namespace MonoTris
         {
             _cells[y, x].Value = color;
         }
+
+        public int CountCompletedLines()
+        {
+            var linesCompleted = 0;
+            for (var y = 0; y < Height; y++)
+            {
+                if (IsLineComplete(y)) linesCompleted++;
+            }
+            return linesCompleted;
+        }
+
+        public void ClearCompletedLines()
+        {
+            for (var y = 0; y < Height; y++)
+            {
+                if (IsLineComplete(y))
+                {
+                    // for all lines above, copy them down
+                    for (var yy = y; yy >= 0; yy--)
+                    {
+                        CopyLineAbove(yy);
+                    }
+                }
+            }
+        }
+
+        public void ClearAll()
+        {
+            IterCells(cell => cell.Value = BlockColor.None);
+        }
+
+        private bool IsLineComplete(int y)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                if (_cells[y, x].Value == BlockColor.None)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void CopyLineAbove(int y)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var blockAboveColor = y == 0 ? BlockColor.None : _cells[y - 1, x].Value;
+                SetCellColor(x, y, blockAboveColor);
+            }
+        }
     }
 
     public struct StageConfiguration

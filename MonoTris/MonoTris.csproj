@@ -80,6 +80,7 @@
     <Compile Include="Src\GameStates\TitleScreen.cs" />
     <Compile Include="Src\Fonts.cs" />
     <Compile Include="Src\TetrominoShape.cs" />
+    <Compile Include="Src\RandomGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

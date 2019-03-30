@@ -5,10 +5,15 @@ namespace MonoTris
 {
     public class Timer
     {
-        public readonly double TimeOut;
+        public double TimeOut { get; private set; }
         public double TimeLeft { get; private set; }
         public bool IsRepeat { get; private set; } = true;
         public bool IsRunning { get; private set; } = true;
+        public double Period
+        {
+            get => 1.0 / TimeOut;
+            set => TimeOut = 1.0 / value;
+        }
 
         public event Action OnTimeOut = delegate () { };
 

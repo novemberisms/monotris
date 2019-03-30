@@ -19,6 +19,7 @@ namespace MonoTris
         private Tetromino _activeTetromino;
         private Tetromino _nextTetromino;
         private RandomGenerator _randomGenerator;
+        private uint _score;
 
 
         public override void Cleanup()
@@ -35,11 +36,16 @@ namespace MonoTris
             _borderDrawer.DrawStage(spriteBatch, _border);
             _nextPieceDrawer.DrawStage(spriteBatch, _nextPiece);
 
-            // spriteBatch.DrawString(Fonts.Title, "GAMEPLAY TIME!", new Vector2(0, 0), Color.White);
+            // draw the score
+            spriteBatch.DrawString(Fonts.Regular, "Score: " + _score.ToString(), new Vector2(0, 0), Color.White);
         }
 
         public override void Initialize()
         {
+            // initialize score
+            _score = 0;
+
+            // initialize gravity timer
             _gravityTimer = new Timer(0.5, true);
             _gravityTimer.OnTimeOut += GravityTick;
 
@@ -201,6 +207,22 @@ namespace MonoTris
 
         private void ClearCompletedLines()
         {
+            var linesCleared = _stage.CountCompletedLines();
+            switch (linesCleared)
+            {
+                case 1:
+                    _score += 1;
+                    break;
+                case 2:
+                    _score += 3;
+                    break;
+                case 3:
+                    _score += 6;
+                    break;
+                case 4:
+                    _score += 12;
+                    break;
+            }
             _stage.ClearCompletedLines();
         }
 

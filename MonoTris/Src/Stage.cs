@@ -8,15 +8,8 @@ namespace MonoTris
         private StageCell[,] _cells;
         private readonly Vector2 _dimensions;
 
-        public int Width
-        {
-            get { return (int)_dimensions.X; }
-        }
-
-        public int Height
-        {
-            get { return (int)_dimensions.Y; }
-        }
+        public int Width => (int)_dimensions.X;
+        public int Height => (int)_dimensions.Y;
 
         public Stage(StageConfiguration config)
         {
@@ -115,7 +108,7 @@ namespace MonoTris
     public class StageCell
     {
         public BlockColor Value = BlockColor.None;
-        readonly public Vector2 Coordinates;
+        public readonly Vector2 Coordinates;
 
         public StageCell(int x, int y)
         {
